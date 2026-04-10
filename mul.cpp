@@ -1,7 +1,7 @@
 #include "iostream"
 #include "stdlib.h"
 
-#define DIMENSIONS  3
+#define DIMENSIONS  5
 
 using namespace std;
 
@@ -44,31 +44,29 @@ int main(){
 
   */
 
-    double a[][DIMENSIONS] = {
-      {2, 3, 1},
-      {-1, 0, 2},
-      // {0.1, 0.8, 0.1}
-    };
+   int house [][DIMENSIONS] = {
+     {5, 20, 16, 7, 17},
+     {7, 18, 12, 9, 21},
+     {6, 25, 8, 5, 23}
+   };
 
-  
-    double b[][2] = {
-      {1, -2},
-      {0, 5},
-      {4, 1.0}
-     };
-  
+   int constructed [][1] = {
+     {5},
+     {7},
+     {12}
+   };
 
-   int sizex_a = sizeof(a[0]) / sizeof(double);
-   int sizex_b = sizeof(b[0]) / sizeof(double);
+   int sizex_house = sizeof(house[0]) / sizeof(int);
+   int sizex_constructed = 1;
 
-   int sizey_a = sizeof(a) / sizeof(a[0]);
-   int sizey_b = sizeof(b) / sizeof(b[0]);
+   int sizey_house = sizeof(house) / sizeof(house[0]);
+   int sizey_constructed = sizeof(constructed) / sizeof(constructed[0]);
 
-   double *res = mul_matrix<double>((double *) a, sizex_a, sizey_a, (double *) b, sizex_b, sizey_b);
+   int *res = mul_matrix<int>((int *) house, sizex_house, sizey_house, (int *) constructed, sizex_constructed, sizey_constructed);
 
-   for(int i = 0; i < sizey_a; i++){
-     for(int j = 0; j < sizex_b; j++){
-       cout << *((res + i * sizex_b) + j) << " ";
+   for(int i = 0; i < sizey_house; i++){
+     for(int j = 0; j <  sizex_house ; j++){
+       cout << *((res + i * sizex_house) + j) << " ";
      }
      cout << endl;
    }
