@@ -14,10 +14,10 @@ Number *mul_matrix(Number *matrix1, int lenx1, int leny1, Number *matrix2, int l
   Number *matrix_res = (Number *) malloc(leny1 * lenx2 * sizeof(Number));
   
   for(int i = 0; i < lenx2; i++){
-    for(int j =  0; j < leny1; j++){
-      for(int k = 0; k < leny2; k++){
+    for(int k = 0; k < leny2; k++){
+      for(int j =  0; j < leny1; j++){
 	cout << "[" << i << "] [" << j << "] "<< *((matrix1 + i * leny2) + k)  << " + " << *((matrix2 + k * leny1) + j) << "\t";
-	//*((matrix_res + k * leny2) + i) = *((matrix1 + i * leny1)); 
+	*((matrix_res + i * leny1) + j) += *((matrix1 + i * leny2) + k) * *((matrix2 + k * leny1) + j);
       }
       cout << endl;
     } 
@@ -40,7 +40,7 @@ int main(){
      {2.0, 1.0},
      {1.0, 2.0},
      {0.1, 1.0}
-  };
+--  };
 
   */
 
