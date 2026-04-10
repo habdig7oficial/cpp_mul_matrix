@@ -15,12 +15,12 @@ Number *mul_matrix(Number *matrix1, int lenx1, int leny1, Number *matrix2, int l
   for(int i = 0; i < lenx2; i++){
     for(int k = 0; k < leny2; k++){
       for(int j =  0; j < leny1; j++){
-	cout << "[" << i << "] [" << j << "] "<< *((matrix1 + i * leny2) + k)  << " + " << *((matrix2 + k * leny1) + j) << "\t";
+		cout << "[" << i << "] [" << j << "] "<< *((matrix1 + i * leny2) + k)  << " + " << *((matrix2 + k * leny1) + j) << "\t";
 	*((matrix_res + i * leny1) + j) += *((matrix1 + i * leny2) + k) * *((matrix2 + k * leny1) + j);
       }
       cout << endl;
     } 
-    cout << endl;
+     cout << endl;
   }
 
   return matrix_res;
@@ -28,7 +28,7 @@ Number *mul_matrix(Number *matrix1, int lenx1, int leny1, Number *matrix2, int l
 
 
 template <typename Number>
-Number *markov_step(uint target, Number *chain, int len, uint step, uint step_b,  bool *success){
+Number *markov_step(uint target, Number *chain, int len, Number *chain_b, uint step, uint step_b,  bool *success){
   if(step == target){
     *success = true;
     return chain;
@@ -38,14 +38,16 @@ Number *markov_step(uint target, Number *chain, int len, uint step, uint step_b,
     return chain;
   }
 
+  Number *current_state;
+  current_state = mul_matrix(chain, len, len, chain_b, len, len);
+  
   cout << step << " " << step + step_b << endl;
 
-  Number *res = markov_step(target, chain, len, 2 * step, step, success);
+  Number *res = markov_step(target, current_state, len, current_state, 2 * step, step, success);
   
   if(*success)
     return res;
-  else
-    return  markov_step(target, chain, len, step + step_b, step_b / 2, success);;
+  return  markov_step(target, current_state, len, chain_b, step + step_b, step_b / 2, success);
 }
 
 
@@ -86,7 +88,10 @@ int main(){
    int sizey_a = sizeof(a) / sizeof(a[0]);
    int sizey_b = sizeof(b) / sizeof(b[0]);
 
-   double *res = mul_matrix<double>((double *) a, sizex_a, sizey_a, (double *) a, sizex_a, sizey_a);
+   //double *res = mul_matrix<double>((double *) a, sizex_a, sizey_a, (double *) a, sizex_a, sizey_a);
+   
+   bool s;
+   double *res = markov_step<double>(3, (double *) a, sizey_a, (double *) a, 2, 1, &s);
 
    for(int i = 0; i < sizey_a; i++){
      for(int j = 0; j < sizex_a; j++){
@@ -94,9 +99,6 @@ int main(){
      }
      cout << endl;
    }
-
-   bool s;
-   markov_step<double>(15, (double *) a, sizey_b, 2, 1, &s);
   
 } 
 
