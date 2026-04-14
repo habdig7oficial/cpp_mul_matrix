@@ -5,6 +5,9 @@
 
 using namespace std;
 
+
+#define GET_MEMORY(m, x, y, len) ((m + y * len) + x)
+
 template <typename Number>
 Number *mul_matrix(Number *matrix1, int lenx1, int leny1, Number *matrix2, int lenx2, int leny2){
   if(lenx1 != leny2)
@@ -15,8 +18,12 @@ Number *mul_matrix(Number *matrix1, int lenx1, int leny1, Number *matrix2, int l
   for(int i = 0; i < lenx1; i++){
     for(int k = 0; k < leny2; k++){
       for(int j =  0; j < leny1; j++){
-	cout << "res[" << i << "][" << j << "]= "<< *((matrix1 + i * leny2) + k)  << " * " << *((matrix2 + k * leny1) + j) << "\t";
-	*((matrix_res + i * leny1) + j) += *((matrix1 + i * leny2) + k) * *((matrix2 + k * leny1) + j);
+	cout << "res[" << j << "][" << i << "]= "<< *GET_MEMORY(matrix1, k, i, leny2) << " * " << *GET_MEMORY(matrix2, j, k, leny1) << "\t";
+	//*((matrix_res + i * leny1) + j) += *((matrix1 + i * leny2) + k) * *((matrix2 + k * leny1) + j);
+
+	*GET_MEMORY(matrix_res, j, i, leny1) += *GET_MEMORY(matrix1, k, i, leny2) * *GET_MEMORY(matrix2, j, k, leny1);
+	
+	cout << *GET_MEMORY(matrix_res, j, i, leny1)   << endl;
       }
       cout << endl;
     } 
